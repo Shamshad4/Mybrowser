@@ -1,50 +1,80 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shamshad Malik Browser</title>
+    <title>Shamshad Google</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
-        .box { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; border: 1px solid #38bdf8; width: 90%; max-width: 400px; box-shadow: 0 0 20px #38bdf8; }
-        h1 { color: #38bdf8; font-size: 22px; margin-bottom: 20px; text-transform: uppercase; }
-        input { width: 100%; padding: 15px; border-radius: 10px; border: none; margin-bottom: 15px; box-sizing: border-box; font-size: 16px; }
-        .main-btn { width: 100%; padding: 15px; background: #38bdf8; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; font-size: 18px; }
-        .links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
-        .links a { color: #fff; text-decoration: none; font-size: 13px; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #38bdf8; font-weight: bold; }
-        .footer { margin-top: 20px; font-size: 10px; color: #38bdf8; opacity: 0.7; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: #202124; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: white; }
+        .logo { font-size: 50px; font-weight: bold; margin-bottom: 30px; }
+        .logo span:nth-child(1) { color: #4285F4; } .logo span:nth-child(2) { color: #EA4335; } .logo span:nth-child(3) { color: #FBBC05; } .logo span:nth-child(4) { color: #4285F4; } .logo span:nth-child(5) { color: #34A853; } .logo span:nth-child(6) { color: #EA4335; }
+        .search-area { width: 90%; max-width: 580px; position: relative; }
+        input { width: 100%; padding: 15px 50px 15px 20px; border-radius: 30px; border: 1px solid #5f6368; background: #202124; color: white; font-size: 18px; outline: none; box-sizing: border-box; }
+        input:hover, input:focus { background: #303134; box-shadow: 0 1px 6px rgba(0,0,0,0.3); border-color: transparent; }
+        .mic-icon { position: absolute; right: 15px; top: 12px; cursor: pointer; font-size: 22px; color: #4285F4; }
+        .buttons { margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .btn { background: #303134; border: 1px solid #303134; color: #e8eaed; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; }
+        .btn:hover { border: 1px solid #5f6368; }
+        .footer { position: fixed; bottom: 20px; font-size: 12px; color: #9aa0a6; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>SHAMSHAD MALIK</h1>
-        <p style="font-size: 12px; margin-bottom: 15px;">सुरक्षित सरकारी सेवा एक्सेस</p>
-        
-        <input type="text" id="userInput" placeholder="यहाँ कुछ भी सर्च करें...">
-        <button class="main-btn" onclick="openWindow()">सर्च/खोजें</button>
-        
-        <div class="links">
-            <a href="https://myaadhaar.uidai.gov.in/" target="_blank">Aadhar Login</a>
-            <a href="https://voters.eci.gov.in/" target="_blank">Voter ID</a>
-            <a href="https://www.google.com" target="_blank">Google Search</a>
-            <a href="https://eportal.incometax.gov.in/" target="_blank">Income Tax</a>
-        </div>
-        
-        <div class="footer">SHAMSHAD MALIK DIGITAL &copy; 2025</div>
+
+    <div class="logo">
+        <span>S</span><span>h</span><span>a</span><span>m</span><span>s</span><span>h</span><span>a</span><span>d</span>
     </div>
 
+    <div class="search-area">
+        <input type="text" id="searchInput" placeholder="गूगल पर सर्च करें या टाइप करें...">
+        <span class="mic-icon" onclick="startVoiceSearch()">🎤</span>
+    </div>
+
+    <div class="buttons">
+        <button class="btn" onclick="googleSearch()">Google Search</button>
+        <a href="https://myaadhaar.uidai.gov.in/" target="_blank" class="btn">आधार लॉगिन</a>
+        <a href="https://voters.eci.gov.in/" target="_blank" class="btn">वोटर कार्ड</a>
+        <a href="https://pmkisan.gov.in/" target="_blank" class="btn">PM किसान</a>
+    </div>
+
+    <div class="footer">SHAMSHAD MALIK DIGITAL &copy; 2025</div>
+
     <script>
-        function openWindow() {
-            let query = document.getElementById('userInput').value;
-            if(!query) return alert("कृपया कुछ टाइप करें");
+        // गूगल सर्च फंक्शन
+        function googleSearch() {
+            var val = document.getElementById('searchInput').value;
+            if(val.trim() !== "") {
+                window.open("https://www.google.com/search?q=" + encodeURIComponent(val), "_blank");
+            }
+        }
+
+        // एंटर बटन दबाने पर सर्च
+        document.getElementById('searchInput').addEventListener("keypress", function(e) {
+            if (e.key === "Enter") { googleSearch(); }
+        });
+
+        // वॉइस (बोलकर) सर्च फंक्शन
+        function startVoiceSearch() {
+            var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'hi-IN'; // हिंदी भाषा
             
-            // अगर वेबसाइट है तो उसे खोलें, नहीं तो गूगल सर्च करें
-            let url = query.includes('.') ? (query.startsWith('http') ? query : 'https://' + query) : 'https://www.google.com/search?q=' + encodeURIComponent(query);
+            recognition.onstart = function() {
+                document.getElementById('searchInput').placeholder = "बोलिये, मैं सुन रहा हूँ...";
+            };
             
-            // इसे नई विंडो में खोलने से लॉगिन काम करेगा
-            window.open(url, '_blank');
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                document.getElementById('searchInput').value = transcript;
+                googleSearch();
+            };
+
+            recognition.onerror = function() {
+                alert("माइक काम नहीं कर रहा, कृपया परमिशन चेक करें।");
+                document.getElementById('searchInput').placeholder = "गूगल पर सर्च करें...";
+            };
+
+            recognition.start();
         }
     </script>
 </body>
 </html>
+
